@@ -1,16 +1,17 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Game {
 
     String secretWord;
-    HashMap<String,ArrayList<String>> anagramMap;
-    List<String> keysAsArray;
+    Map<String,ArrayList<String>> anagramMap;
+    List<String> keysToSearch;
 
     public Game() {
         anagramMap=SowpodsUtil.getAnagramMap();
         Random rand = new Random();
-        keysAsArray = new ArrayList<String>(anagramMap.keySet());
-        ArrayList<String>randomList = anagramMap.get(keysAsArray.get(rand.nextInt(keysAsArray.size())));
+        keysToSearch = new ArrayList<String>(anagramMap.keySet());
+        ArrayList<String>randomList = anagramMap.get(keysToSearch.get(rand.nextInt(keysToSearch.size())));
         secretWord =randomList.get(rand.nextInt(randomList.size()));
     }
 
@@ -30,9 +31,13 @@ public class Game {
             if(userGuess==secretWord.length()){
                 break;
             }
-            guessWord=anagramMap.get(keysAsArray.get(i++)).get(0);
+            guessWord=anagramMap.get(keysToSearch.get(0)).get(0);
+            anagramMap.remove(keysToSearch.get(0));
+            keysToSearch.remove(0);
             System.out.println("Computer's guess word : "+guessWord+"\nEnter no of matches with your secret word");
             sysGuess = scan.nextInt();
+            if(sysGuess==0)
+                prune(guessWord);
             if(sysGuess==secretWord.length())
                 break;
         }
@@ -53,7 +58,17 @@ public class Game {
         return matchCount;
     }
 
-
+    private void prune(String guessWord){
+        ArrayList<String> keysToRemove = new ArrayList<>();
+        for(char c : guessWord.toCharArray()){
+            for(String key : keysToSearch){
+                if(key.contains(c+"")){
+                    keysToRemove.add(key);
+                }
+            }
+        }
+        keysToSearch.removeAll(keysToRemove);
+    }
 
 
 

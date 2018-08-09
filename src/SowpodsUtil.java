@@ -2,13 +2,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class SowpodsUtil {
-    public static HashMap<String, ArrayList<String>> anagramMap = new HashMap<>();
+    public static Map<String, ArrayList<String>> anagramMap = new TreeMap<>();
 
     public static void intSowpodsUtil(int noOfChar){
 
@@ -20,7 +17,7 @@ public class SowpodsUtil {
             br = new BufferedReader(new FileReader(file));
             String st;
             while ((st = br.readLine()) != null ) {
-                if (st.length() == noOfChar) {
+                if (st.length() == noOfChar && hasUniqueChar(st)) {
                     char[] letters = st.toCharArray();
                     Arrays.sort(letters);
                     String key = new String(letters);
@@ -40,16 +37,28 @@ public class SowpodsUtil {
 
     }
 
-    public static void printMap(HashMap<String, ArrayList<String>> hashMap) {
+    public static void printMap(Map<String, ArrayList<String>> hashMap) {
         for (Object o : hashMap.entrySet()) {
             Map.Entry pair = (Map.Entry) o;
             System.out.println(pair.getKey() + " " + pair.getValue().toString());
         }
     }
 
-    public static HashMap getAnagramMap()  {
+    public static Map getAnagramMap()  {
         return anagramMap;
     }
 
+    private static boolean hasUniqueChar(String str){
+        int checker = 0;
 
+        for (int i=0; i<str.length(); i++)
+        {
+            int bitAtIndex = str.charAt(i)-'a';
+            if ((checker & (1<<bitAtIndex)) > 0)
+                return false;
+            checker = checker | (1<<bitAtIndex);
+        }
+
+        return true;
+    }
 }

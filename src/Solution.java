@@ -3,6 +3,8 @@ import java.io.IOException;
 public class Solution {
     public static void main(String[] args) throws IOException {
         SowpodsUtil.intSowpodsUtil(4);
-        SowpodsUtil.printMap(SowpodsUtil.getAnagramMap());
+        //SowpodsUtil.printMap(SowpodsUtil.getAnagramMap());
+        Game g = new Game();
+        g.play();
     }
 }
