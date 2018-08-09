@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class SowpodsUtil {
     public static HashMap<Integer, ArrayList<String>> anagramMap ;
@@ -31,6 +32,13 @@ public class SowpodsUtil {
             }
         }
         bufferedReader.close();
+    }
+
+    public static void printMap(HashMap<String, ArrayList<String>> hashMap) {
+        for (Object o : hashMap.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
+            System.out.println(pair.getKey() + " " + pair.getValue().toString());
+        }
     }
 
     public static HashMap getAnagramMap() throws IOException {
