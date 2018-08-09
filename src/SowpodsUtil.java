@@ -1,37 +1,44 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SowpodsUtil {
-    public static HashMap<Integer, ArrayList<String>> anagramMap ;
+    public static HashMap<String, ArrayList<String>> anagramMap ;
 
-    public static void readFromFile() throws IOException {
-        anagramMap = new HashMap<>();
-        String fileName = "src/sowpods.txt";
-        String line;
-        FileReader fileReader =
-                new FileReader(fileName);
-        BufferedReader bufferedReader =
-                new BufferedReader(fileReader);
-        while((line = bufferedReader.readLine()) != null ) {
-            String sortedString = sortString(line);
-            if(anagramMap.get(line.length()) == null){
-                ArrayList arrayList = new ArrayList();
-                arrayList.add(sortedString);
-                anagramMap.put(line.length(),arrayList);
-            }else {
-                ArrayList arrayList = anagramMap.get(line.length());
-                if(!arrayList.contains(sortedString)){
-                    arrayList.add(sortedString);
-                    anagramMap.put(line.length(),arrayList);
+    public static void intSowpodsUtil(int noOfChar){
+
+        File file = new File("./src/sowpods.txt");
+        System.out.println(file);
+
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(file));
+            String st;
+            while ((st = br.readLine()) != null && st.length()==noOfChar)  {
+                char[] letters = st.toCharArray();
+                Arrays.sort(letters);
+                String key = new String(letters);
+                ArrayList<String> temp;
+                if(!anagramMap.containsKey(key)){
+                    temp = new ArrayList<>();
                 }
+                else
+                {
+                    temp = anagramMap.get(key);
+                }
+                temp.add(st);
+                anagramMap.put(key,temp);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        bufferedReader.close();
+
     }
 
     public static void printMap(HashMap<String, ArrayList<String>> hashMap) {
@@ -41,14 +48,9 @@ public class SowpodsUtil {
         }
     }
 
-    public static HashMap getAnagramMap() throws IOException {
-        readFromFile();
+    public static HashMap getAnagramMap()  {
         return anagramMap;
     }
 
-    private static String sortString(String anagram) {
-        char tempArray[] = anagram.toCharArray();
-        Arrays.sort(tempArray);
-        return new String(tempArray);
-    }
+
 }

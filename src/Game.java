@@ -7,7 +7,7 @@ public class Game {
     List<String> keysAsArray;
 
     public Game() {
-       // anagramMap=SowpodsUtil.getAnagramMap();
+        anagramMap=SowpodsUtil.getAnagramMap();
         Random rand = new Random();
         keysAsArray = new ArrayList<String>(anagramMap.keySet());
         ArrayList<String>randomList = anagramMap.get(keysAsArray.get(rand.nextInt(keysAsArray.size())));
